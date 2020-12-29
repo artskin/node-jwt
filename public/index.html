@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <meta name="renderer" content="webkit">
+  <title>登录</title>
+  <meta name="description" content="首页描述"/>
+  <meta name="keywords" content="首页关键词"/>
+  <meta name="author" content="Web Layout:amu"/>
+  <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"/>
+
+</head>
+<body>
+  <input id="name" value="amu" type="text">
+  <input id="pwd" type="text">
+  <button id="loginBtn">登录</button>
+</body>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $()
+  
+  
+  function login(form) {
+    $.post(
+      "/login",
+      {
+        name:form.name,
+        pwd:form.pwd
+      },
+      function (result) {
+        console.log(result)
+      }
+    )
+  }
+
+  $('#loginBtn').click(()=>{
+    let formData ={
+      name:$("#name").val(),
+      pwd:$('#pwd').val()
+    }
+    login(formData)
+  })
+  
+</script>
+</html>
