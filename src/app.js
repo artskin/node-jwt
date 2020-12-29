@@ -4,12 +4,6 @@ const app = express()
 
 const secret = 'dsdsd123sdqd34'
 
-const user = {
-  id:10,
-  name:"amu",
-  age:16
-}
-
 app.use((req,res,next)=>{
   res.setHeader("Access-Control-Allow-Origin", "*")
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With")
@@ -20,13 +14,16 @@ app.use((req,res,next)=>{
   else next();
 })
 
-const whiteList = ['/login']
+const whiteList = ['/login','/','user.html']
 
 app.use((req,res,next)=>{
-  if(whiteList.includes(req.url)){
+  console.log(req.headers.authorization)
+  if(!whiteList.includes(req.url)){
     verifyToken(req.headers.authorization).then(res =>{
+      console.log(res)
       next()
     }).catch(err=>{
+      console.log(err)
       res.status(401).send('token 无效')
     })
   } else {
@@ -35,6 +32,11 @@ app.use((req,res,next)=>{
 })
 
 app.post('/login',(req,res)=>{
+  const user = {
+    id:10,
+    name:"amu",
+    age:16
+  }
   let token = createToken(user)
   res.json({token})
 })

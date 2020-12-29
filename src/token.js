@@ -6,13 +6,12 @@ const createToken = (info)=>{
   let token = jwt.sign(info,scret,{
     expiresIn: 60 * 60 * 10
   })
-
   return token
 }
 
 //验证token
 
-const verifyToken = () =>{
+const verifyToken = (token) =>{
   return new Promise((resolve,reject)=>{
     jwt.verify(token,scret,(err,result)=>{
       if(err){
