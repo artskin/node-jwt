@@ -10,14 +10,21 @@
   <meta name="keywords" content="首页关键词"/>
   <meta name="author" content="Web Layout:amu"/>
   <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"/>
-
+  <link rel="stylesheet" href="https://artskin.github.io/jsCase/src/style/case.css?v=2">
+  <style>
+    input{
+      border:1px solid #ccc;
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
 <body>
-  <input id="name" value="amu" type="text">
-  <input id="pwd" value="123456" type="text">
+  <input id="name" value="admin" type="text"><br>
+  <input id="pwd" value="123456" type="text"><br>
   <button id="loginBtn">登录</button>
   <hr>
-  <p class="userinfo"></p>
+  <p class="usertoken" style="font-size: 12px;"></p>
+  <code class="userinfo"></code>
 </body>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -32,30 +39,31 @@
 
   function login(form) {
     $.ajax({
-      url: "/login",
+      url: "/api/login",
       type: "post",
       data: {
-        userName: form.name,
+        name: form.name,
         pwd: form.pwd
       },
       success: function(res) {
-        
-        if (res) {
+        if (res.code == 200) {
           alert("登录成功"); 
-
-          $('.userinfo').html(res.token)
+          $('.usertoken').html(res.token)
           userInfo(res.token)
           //window.location.href = 'user.html';
         } else {
-          //console.log(res);
+          alert(res.msg)
         }
+      },
+      error:(err)=>{
+        console.log(err);
       }
     });
   }
 
   function userInfo(token) {
     $.ajax({
-      url: "/userInfo",
+      url: "/api/userInfo",
       type: "get",
       headers:{
         authorization:token
@@ -66,7 +74,11 @@
       }
     });
   }
-  
+  //jq
+  $(($)=>{
+    console.log($)
+  })
+
   
 </script>
 </html>
