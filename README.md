@@ -1,12 +1,13 @@
 # node-jwt
-node 实现jwt登录
-node 实现用户登录
-生成token
-校验token
+
+nodejs + express + mongodb + vue3
+实现jwt登录
 
 
 ## todo 
 
 - [x] 注册
 - [ ] 登录
-
+- [ ] 生成token
+- [ ] 校验token，更新token
+- [ ] token过期退出

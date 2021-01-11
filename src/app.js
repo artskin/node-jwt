@@ -2,7 +2,10 @@ const express = require("express");
 const bodyParser = require('body-parser')
 const router = express.Router();
 const {createToken,verifyToken} = require('./token.js');
+
 const reg = require('./api/reg')
+const login = require('./api/login')
+
 const app = express()
 //app.use(bodyParser.json())
 
@@ -16,20 +19,7 @@ app.use((req,res,next)=>{
 })
 app.use(express.json())
 app.use(bodyParser.urlencoded());
-const userLists = [
-  {
-    id:1,
-    name:'admin',
-    role:'管理员',
-    pwd:'admin123'
-  },
-  {
-    id:2,
-    name:'root',
-    pwd:'root123'
-  }
-]
-const currentIndex = 0;
+
 const whiteList = ['/api/login','/api/reg']
 
 app.use((req,res,next)=>{
@@ -49,55 +39,33 @@ app.use((req,res,next)=>{
 
 
 
-app.post('/api/login',(req,res)=>{
-  console.log(req.body)
-  let loginInfo = req.body;
-  //let currentUser ={}
-  //const hasUser = checkUser()
-  const checkUser = (user)=>{
-    //console.log(user.name == loginInfo.name,user.pwd == loginInfo.pwd)
-    if (user.name == loginInfo.name && user.pwd == loginInfo.pwd){
-      return true
-    }else{
-      return false
-    }
-  }
-  const currentUser = userLists.find(checkUser)
-
-  if(currentUser){
-    let token = createToken(currentUser)
-    res.json({token})
-  }else{
-    res.send({
-      code:300,
-      msg:'用户或密码不正确'
-    })
-  }
-  // userLists.find((item,index)=>{
-  //   console.log(index,item.name , loginInfo.name,item.name === loginInfo.name)
-  //   if(item.name === loginInfo.name){
-  //     currentIndex = index
-  //     currentUser =  item
-  //     console.log('数据库',currentUser)
-  //     // if(loginInfo.pwd !== currentUser.pwd){
-  //     //   res.send({
-  //     //     code:300,
-  //     //     msg:'密码不正确'
-  //     //   })
-  //     //   return
-  //     // }
-  //     // let token = createToken(currentUser)
-  //     // res.json({token})
-  //   }else{
-  //     res.send({
-  //       code:300,
-  //       msg:'用户不存在'
-  //     })
-  //     return
-  //   }
-  // })
+// app.post('/api/login',(req,res)=>{
   
-})
+//   // userLists.find((item,index)=>{
+//   //   console.log(index,item.name , loginInfo.name,item.name === loginInfo.name)
+//   //   if(item.name === loginInfo.name){
+//   //     currentIndex = index
+//   //     currentUser =  item
+//   //     console.log('数据库',currentUser)
+//   //     // if(loginInfo.pwd !== currentUser.pwd){
+//   //     //   res.send({
+//   //     //     code:300,
+//   //     //     msg:'密码不正确'
+//   //     //   })
+//   //     //   return
+//   //     // }
+//   //     // let token = createToken(currentUser)
+//   //     // res.json({token})
+//   //   }else{
+//   //     res.send({
+//   //       code:300,
+//   //       msg:'用户不存在'
+//   //     })
+//   //     return
+//   //   }
+//   // })
+  
+// })
 
 app.get('/api/userInfo',(req,res)=>{
   res.send({
@@ -113,3 +81,4 @@ app.use(express.static('public'))
 
 
 app.use('/api', reg)
+app.use('/api', login)

@@ -30,7 +30,7 @@ const routes = [
   },
   {
     path:'/login',
-    component: Login
+    component: () => loadModule('./views/login.vue',options)
   },
   {
     path:'/reg',
