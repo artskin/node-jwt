@@ -5,15 +5,14 @@ const router = express.Router();
 // router.use(bodyParser.urlencoded())
 
 router.post('/reg',(req,res,next)=>{
-  console.log(req.param.uname)
-  console.log(req.route)
-  console.log(req.params.uname)
+  console.log(req.body)
   // res.send({
   //   code:200,
   //   msg:'注册成'
   // })
-  res.send(req.body);
-  //res.json({})
+  //res.send(req.body);
+  
+  res.json(req.body)
 })
 
 module.exports = router

@@ -5,16 +5,17 @@ const {createToken,verifyToken} = require('./token.js');
 const reg = require('./api/reg')
 const app = express()
 //app.use(bodyParser.json())
-app.use(bodyParser.urlencoded());
+
 app.use((req,res,next)=>{
   res.setHeader("Access-Control-Allow-Origin", "*")
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With")
   res.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS")
-  res.setHeader("X-Powered-By",' 3.2.1')
+  res.setHeader("X-Powered-By",'3.2.1')
   if(req.method ==='OPTIONS') res.send(200);
   else next();
 })
-
+app.use(express.json())
+app.use(bodyParser.urlencoded());
 const userLists = [
   {
     id:1,
@@ -109,8 +110,6 @@ app.listen(4000,()=>{
   console.log('Server started on port 4000 http://localhost:4000')
 })
 app.use(express.static('public'))
-
-
 
 
 app.use('/api', reg)

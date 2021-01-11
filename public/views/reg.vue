@@ -11,6 +11,7 @@
 <script>
 //const myRequest = new Request(url)
 const { reactive,computed,toRefs,watchEffect,renderTemplate,createApp } = Vue;
+//axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 export default {
   name:'reg',
   setup(props,ctx){
@@ -21,29 +22,14 @@ export default {
         pwd:'123456',
       }
     })
-    const getForm=()=>{
-      //console.log(state)
-      return state.form
-    }
-    //console.log(getForm)
 
     const regFn = ()=>{
-      axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-      console.log( )
-      fetch('/api/reg',{
-        method:'post',
-        body:{
-          uname:'admin',
-          pwd:'123456',
-        }
-      }).then(res=>{
-        console.log(res)
-      })
-
-      axios.post('/api/reg',{
-        firstName: 'Fred'
+      axios({
+        method: 'post',
+        url: '/api/reg',
+        data: state.form
       }).then((res)=>{
-        console.log(res)
+        console.log(res.data)
       })
     }
 
