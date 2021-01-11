@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 
-router.use(bodyParser.urlencoded())
+// router.use(bodyParser.urlencoded())
 
 router.post('/reg',(req,res,next)=>{
   console.log(req.param.uname)

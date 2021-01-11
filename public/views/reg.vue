@@ -28,6 +28,7 @@ export default {
     //console.log(getForm)
 
     const regFn = ()=>{
+      axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
       console.log( )
       fetch('/api/reg',{
         method:'post',
@@ -40,9 +41,9 @@ export default {
       })
 
       axios.post('/api/reg',{
-        data: {
-          firstName: 'Fred'
-        },
+        firstName: 'Fred'
+      }).then((res)=>{
+        console.log(res)
       })
     }
 

@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require('body-parser')
 const router = express.Router();
 const {createToken,verifyToken} = require('./token.js');
-
+const reg = require('./api/reg')
 const app = express()
 //app.use(bodyParser.json())
 app.use(bodyParser.urlencoded());
@@ -111,6 +111,6 @@ app.listen(4000,()=>{
 app.use(express.static('public'))
 
 
-const reg = require('./api/reg')
+
 
 app.use('/api', reg)
