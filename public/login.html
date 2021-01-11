@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
   <meta name="renderer" content="webkit">
-  <title>注册</title>
+  <title>登录</title>
   <meta name="description" content="首页描述"/>
   <meta name="keywords" content="首页关键词"/>
   <meta name="author" content="Web Layout:amu"/>
@@ -15,32 +15,28 @@
 </head>
 <body>
   <div class="paper">
-    
-    <div class="flex">
-      <form action="">
-        <h2>注册</h2>
-        <input id="name" value="admin" type="text"><br>
-        <input id="pwd" value="123456" type="text"><br>
-        <button id="regBtn">注册</button>
-        <hr>
-      </form>
-    </div>
+    <input id="name" value="admin" type="text"><br>
+    <input id="pwd" value="123456" type="text"><br>
+    <button id="loginBtn">登录</button>
+    <hr>
+    <p class="usertoken" style="font-size: 12px;"></p>
+    <code class="userinfo"></code>
   </div>
 </body>
 
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-  $('#regBtn').click(()=>{
+  $('#loginBtn').click(()=>{
     let formData ={
       name:$("#name").val(),
       pwd:$('#pwd').val()
     }
-    regUser(formData)
+    login(formData)
   })
 
-  function regUser(form) {
+  function login(form) {
     $.ajax({
-      url: "/api/reg",
+      url: "/api/login",
       type: "post",
       data: {
         name: form.name,
@@ -58,6 +54,20 @@
       },
       error:(err)=>{
         console.log(err);
+      }
+    });
+  }
+
+  function userInfo(token) {
+    $.ajax({
+      url: "/api/userInfo",
+      type: "get",
+      headers:{
+        authorization:token
+      },
+      success: function(res) {
+        console.log(res);
+        $('.userinfo').html(JSON.stringify(res))
       }
     });
   }

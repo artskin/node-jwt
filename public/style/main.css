@@ -1,0 +1,11 @@
+.paper{
+  width: 800px;
+  margin: 0 auto;
+}
+button{
+  padding: 8px;
+}
+input{
+  border:1px solid #ccc;
+  margin-bottom: 15px;
+}
