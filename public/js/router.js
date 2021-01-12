@@ -33,6 +33,10 @@ const routes = [
     component: () => loadModule('./views/login.vue',options)
   },
   {
+    path:'/userinfo',
+    component: () => loadModule('./views/userinfo.vue',options)
+  },
+  {
     path:'/reg',
     //component: () => loadModule('./views/reg.vue?v='+ +new Date(),options)
     component: () => loadModule('./views/reg.vue',options)
@@ -49,7 +53,6 @@ const routes = [
 //     loader,
 //   });
 // }
-console.log(window)
 
 const router = VueRouter.createRouter({
   history:VueRouter.createWebHashHistory(),

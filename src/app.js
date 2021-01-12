@@ -2,13 +2,14 @@ const express = require("express");
 const bodyParser = require('body-parser')
 const router = express.Router();
 const {createToken,verifyToken} = require('./token.js');
-
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+global.SALT_KEY="amu@521"
 const reg = require('./api/reg')
 const login = require('./api/login')
+const userinfo = require('./api/userinfo')
 
 const app = express()
-//app.use(bodyParser.json())
-
 app.use((req,res,next)=>{
   res.setHeader("Access-Control-Allow-Origin", "*")
   res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With")
@@ -17,19 +18,29 @@ app.use((req,res,next)=>{
   if(req.method ==='OPTIONS') res.send(200);
   else next();
 })
+
+//解析
 app.use(express.json())
 app.use(bodyParser.urlencoded());
 
-const whiteList = ['/api/login','/api/reg']
+// const responseData ={};
+// router.use((req,res,next)=>{
+//   responseData = {
+//     code:0,
+//     msg:'未定义'
+//   }
+//   next()
+// })
+
+const whiteList = ['/','/api/login','/api/reg']
 
 app.use((req,res,next)=>{
   console.log(req.url)
   if(req.url.includes('api') && !whiteList.includes(req.url)){
+    //console.log(req.headers.authorization)
     verifyToken(req.headers.authorization).then(res =>{
-      //console.log(res)
       next()
     }).catch(err=>{
-      //console.log(err)
       res.status(401).send('token 无效')
     })
   } else {
@@ -37,10 +48,7 @@ app.use((req,res,next)=>{
   }
 })
 
-
-
 // app.post('/api/login',(req,res)=>{
-  
 //   // userLists.find((item,index)=>{
 //   //   console.log(index,item.name , loginInfo.name,item.name === loginInfo.name)
 //   //   if(item.name === loginInfo.name){
@@ -67,18 +75,19 @@ app.use((req,res,next)=>{
   
 // })
 
-app.get('/api/userInfo',(req,res)=>{
-  res.send({
-    code:100,
-    data:userLists[currentIndex]
-  })
-})
-
-app.listen(4000,()=>{
-  console.log('Server started on port 4000 http://localhost:4000')
-})
 app.use(express.static('public'))
-
 
 app.use('/api', reg)
 app.use('/api', login)
+app.use('/api', userinfo)
+
+mongoose.connect('mongodb://localhost:27017/amudb',(err)=>{
+  if(err){
+    console.log('连接失败')
+  }else{
+    console.log('连接成功')
+    app.listen(4000,()=>{
+      console.log('Server started on port 4000 http://localhost:4000')
+    })
+  }
+})

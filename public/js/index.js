@@ -11,6 +11,5 @@ const App = {
 }
 const app = Vue.createApp(App);
 app.use(router)
-//app.use(axios)
 
-app.mount('#app')
+window.vm = app.mount('#app')

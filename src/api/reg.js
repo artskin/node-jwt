@@ -1,18 +1,28 @@
-const express = require("express");
-const router = express.Router();
-// const bodyParser = require('body-parser')
 
-// router.use(bodyParser.urlencoded())
+const router = require("express").Router();
+const User = require('../models/User');
+const md5 = require('blueimp-md5')
 
 router.post('/reg',(req,res,next)=>{
-  console.log(req.body)
-  // res.send({
-  //   code:200,
-  //   msg:'注册成'
-  // })
-  //res.send(req.body);
-  
-  res.json(req.body)
+  const {username,password} = req.body;
+  User.findOne({
+    username:username
+  },(err,result)=>{
+    if(result){
+      res.json({
+        code:400,
+        msg:'用户名已被占用'
+      })
+      return
+    }
+    
+    let user = new User({
+      username:username,
+      password:md5(new Buffer.from(username).toString('base64').substr(4) + global.SALT_KEY + password)
+    })
+    user.save()
+    res.json(req.body);
+  })
 })
 
 module.exports = router

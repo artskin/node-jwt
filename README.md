@@ -7,7 +7,10 @@ nodejs + express + mongodb + vue3
 ## todo 
 
 - [x] 注册
+  1. 数据库，密码md5加密
 - [x] 登录
 - [x] 生成token
-- [ ] 校验token，更新token
+- [x] 校验verifyToken
+- [x] 获取用户信息
+- [ ] 更新refreshToken
 - [ ] token过期退出

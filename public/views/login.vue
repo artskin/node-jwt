@@ -1,37 +1,54 @@
 <template>
   <div class="reg">
     <h2>登录</h2>
-    <code>正确账号是admin admin123</code>
+    
     <form action="">
-      <input v-model="form.uname" type="text"><br>
-      <input v-model="form.pwd" type="text"><br>
-      <button @click="regFn">登录</button>
+      <input placeholder="请输入用户名" v-model="form.uname" type="text"><br>
+      <input placeholder="请输入用密码" v-model="form.pwd" type="password"><br>
+      <button @click="loginFn">登录</button>
     </form>
+    <code>账号是admin 123456aa</code>
   </div>
 </template>
-<script>
-const { reactive,computed,toRefs,watchEffect,renderTemplate,createApp } = Vue;
+<script type="module">
+const { reactive,computed,toRefs,watchEffect,renderTemplate,createApp,getCurrentInstance } = Vue;
+const { useRouter, useRoute } = VueRouter
 export default {
   name:'login',
   setup(props,ctx){
+    console.log(ctx)
+    const router = useRouter()
     const state = reactive({
       form:{
         uname:'admin',
-        pwd:'123456',
+        pwd:'123456aa',
       }
     })
-    const regFn = ()=>{
+    const loginFn = (e)=>{
+      e.preventDefault();
       axios({
-        method: 'post',
         url: '/api/login',
-        data: state.form
+        method: 'post',
+        data: {
+          username:state.form.uname,
+          password:btoa(state.form.pwd)
+        }
       }).then((res)=>{
+        if(res.data.token){
+          axios.defaults.headers['authorization'] = res.data.token;
+          window.localStorage.setItem('token',res.data.token)
+          //window.vm.$router.push({
+          router.push({
+            path:'/userinfo',
+            query:{id:res.data.id}
+          })
+        }
         console.log(res.data)
       })
     }
     return {
       ...toRefs(state),
-      regFn
+      loginFn
     }
   }
 }
