@@ -3,24 +3,24 @@
   "version": 2,
   "builds": [
 		{ 
-      "src": "/app/index.js",
+      "src": "/src/app.js",
       "use": "@now/node-server" 
     }
 	],
 	"routes": [
     {
       "src": "/api/login", 
-      "dest": "/app/index.js",
+      "dest": "/src/app.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/reg", 
-      "dest": "/app/index.js",
+      "dest": "/src/app.js",
       "methods": ["POST"]
     },
     {
       "src": "/api/userinfo", 
-      "dest": "/app/index.js",
+      "dest": "/src/app.js",
       "methods": ["GET"]
     }
   ]
