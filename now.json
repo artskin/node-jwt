@@ -1,7 +1,8 @@
 {
   "version": 2,
   "builds": [
-    { "src": "src/app.js", "use": "@now/node-server" }
+    { "src": "public/", "use": "@now/static" },
+    { "src": "public/app/index.js", "use": "@now/node-server" }
   ],
   "routes": [
     {
@@ -11,7 +12,7 @@
     },
     {
       "src": "/userinfo",
-      "dest": "src/app.js",
+      "dest": "public/app/index.js",
       "methods": ["GET"]
     }
   ]
