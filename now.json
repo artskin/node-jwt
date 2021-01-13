@@ -5,7 +5,7 @@
       "src": "/",
       "use": "@now/static"
     },
-    { "src": "src/app.js", "use": "@now/node-server" }
+    { "src": "index.js", "use": "@now/node-server" }
   ],
   "routes": [
     {

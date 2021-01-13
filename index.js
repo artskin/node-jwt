@@ -20,7 +20,7 @@ app.get("/users", (req, res) => {
     { name: "Chris", location: "Vegas" }
   ]);
 });
-
+app.use(express.static('public'))
 app.post("/user", (req, res) => {
   const { name, location } = req.body;
 
