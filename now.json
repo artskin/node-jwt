@@ -1,16 +1,31 @@
 {
-  "name": "node-jwt",
-  "version": "1.0.2",
+  "name": "now-express",
+  "version": 2,
   "builds": [
 		{ 
-      "src": "./app/index.js",
+      "src": "/src/index.js",
       "use": "@now/node-server" 
     }
 	],
 	"routes": [
     {
       "src": "/(.*)", 
-      "dest": "/app/index.ts"
+      "dest": "/src/index.js"
+    },
+    {
+      "src": "/api/login", 
+      "dest": "/src/index.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/reg", 
+      "dest": "/src/index.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/userinfo", 
+      "dest": "/src/index.js",
+      "methods": ["GET"]
     }
   ]
 }
