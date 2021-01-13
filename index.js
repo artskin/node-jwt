@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
-const reg = require('./api/reg')
-const login = require('./api/login')
-const userinfo = require('./api/userinfo')
+const reg = require('./src/api/reg')
+const login = require('./src/api/login')
+const userinfo = require('./src/api/userinfo')
 const port = 5000;
 
 // Body parser
