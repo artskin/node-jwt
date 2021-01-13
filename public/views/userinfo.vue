@@ -7,6 +7,7 @@
 <script>
 const { reactive,computed,toRefs,watchEffect,onMounted,watch } = Vue;
 const { useRouter, useRoute } = VueRouter
+
 export default {
   name:'userinfo',
   setup(props,ctx){
@@ -27,19 +28,33 @@ export default {
       state.userInfo.id = route.query.id
       getUserInfo(route.query)
     })
+    const getUser = (id)=>{
+      return vm.$http({
+        url:`/api/userinfo?id=${id}`,
+        method: 'get',
+      })
+    }
 
     const getUserInfo = ()=>{
-      axios.defaults.headers['authorization'] = window.localStorage.getItem('token');
-      axios({
-        url: '/api/userinfo',
-        method: 'get',
-        params:{
-          id:state.userInfo.id
-        }
-      }).then((res)=>{
-        console.log(res.data)
-        state.userInfo = res.data
+      getUser(state.userInfo.id).then(res=>{
+        console.log(res)
+        state.userInfo = res
+      }).catch(err=>{
+        console.log(err)
       })
+      //axios.defaults.headers['authorization'] = window.localStorage.getItem('token');
+      // axios({
+      //   url: '/api/userinfo',
+      //   method: 'get',
+      //   params:{
+      //     id:state.userInfo.id
+      //   }
+      // }).then((res)=>{
+      //   console.log(res)
+      //   state.userInfo = res.data
+      // }).catch(err=>{
+      //   console.log(err)
+      // })
     }
 
     return {

@@ -32,7 +32,11 @@ app.use((req,res,next)=>{
     verifyToken(req.headers.authorization).then(res =>{
       next()
     }).catch(err=>{
-      res.status(401).send('token 无效')
+      res.status(401);//.send('token 无效')
+      res.json({
+        code:401,
+        msg:'token无效'
+      })
     })
   } else {
     next()

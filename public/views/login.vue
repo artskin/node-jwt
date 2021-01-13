@@ -12,11 +12,14 @@
 </template>
 <script type="module">
 const { reactive,computed,toRefs,watchEffect,renderTemplate,createApp,getCurrentInstance } = Vue;
-const { useRouter, useRoute } = VueRouter
+const { useRouter, useRoute } = VueRouter;
+
+
 export default {
   name:'login',
+
   setup(props,ctx){
-    console.log(ctx)
+    //console.log(vm.$http())
     const router = useRouter()
     const state = reactive({
       form:{
@@ -24,27 +27,51 @@ export default {
         pwd:'123456aa',
       }
     })
+    
     const loginFn = (e)=>{
       e.preventDefault();
-      axios({
+      let params = {
+        username:state.form.uname,
+        password:btoa(state.form.pwd)
+      }
+      vm.$http({
         url: '/api/login',
         method: 'post',
-        data: {
-          username:state.form.uname,
-          password:btoa(state.form.pwd)
-        }
-      }).then((res)=>{
-        if(res.data.token){
-          axios.defaults.headers['authorization'] = res.data.token;
-          window.localStorage.setItem('token',res.data.token)
+        data: params
+      }).then(res=>{
+        if(res.token){
+          axios.defaults.headers['authorization'] = res.token;
+          window.localStorage.setItem('token',res.token)
           //window.vm.$router.push({
           router.push({
             path:'/userinfo',
-            query:{id:res.data.id}
+            query:{id:res.id}
           })
         }
-        console.log(res.data)
+        //console.log(res)
       })
+      // .catch(err=>{
+      //   console.log('err',err)
+      // })
+      // axios({
+      //   url: '/api/login',
+      //   method: 'post',
+      //   data: {
+      //     username:state.form.uname,
+      //     password:btoa(state.form.pwd)
+      //   }
+      // }).then((res)=>{
+      //   if(res.data.token){
+      //     axios.defaults.headers['authorization'] = res.data.token;
+      //     window.localStorage.setItem('token',res.data.token)
+      //     //window.vm.$router.push({
+      //     router.push({
+      //       path:'/userinfo',
+      //       query:{id:res.data.id}
+      //     })
+      //   }
+      //   console.log(res.data)
+      // })
     }
     return {
       ...toRefs(state),
