@@ -4,25 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "serve": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "builds": [
-    {
-      "public": "/",
-      "use": "@now/static"
-    },
-    {
-      "public": "app/index.js",
-      "use": "@now/node-server"
-    }
-  ],
-  "routes": [
-    {
-      "public": "app/.*",
-      "dest": "api"
-    }
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artskin/node-jwt.git"
@@ -38,7 +24,6 @@
     "blueimp-md5": "^2.18.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.10",
-    "nodemon": "^2.0.7"
+    "mongoose": "^5.11.10"
   }
 }
