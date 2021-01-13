@@ -21,15 +21,9 @@ const App = {
 const app = Vue.createApp(App);
 app.use(router)
 
-
-
-// app.$http = http;
-// app.mixin({
-//   http(){
-//     return http
-//   }
-// })
-
 //Vue.prototype.$http = http
 
 window.vm = app.mount('#app')
+console.log(Vue)
+console.log(app)
+console.log(window.vm)

@@ -20,6 +20,7 @@ export default {
 
   setup(props,ctx){
     //console.log(vm.$http())
+    //console.log(Vue)
     const router = useRouter()
     const state = reactive({
       form:{
