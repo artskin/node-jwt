@@ -9,9 +9,9 @@
   },
   "builds": [
 		{ "public": "/", "use": "@now/static" },
-		{ "src": "app.js", "use": "@now/node-server" }
+		{ "public": "app/index.js", "use": "@now/node-server" }
 	],
-	"routes": [{"src": "/.*", "dest": "api"}],
+	"routes": [{"public": "app/.*", "dest": "api"}],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artskin/node-jwt.git"
