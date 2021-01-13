@@ -7,6 +7,11 @@
     "serve": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "builds": [
+		{ "public": "/", "use": "@now/static" },
+		{ "src": "app.js", "use": "@now/node-server" }
+	],
+	"routes": [{"src": "/.*", "dest": "api"}],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artskin/node-jwt.git"
