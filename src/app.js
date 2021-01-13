@@ -23,15 +23,6 @@ app.use((req,res,next)=>{
 app.use(express.json())
 app.use(bodyParser.urlencoded());
 
-// const responseData ={};
-// router.use((req,res,next)=>{
-//   responseData = {
-//     code:0,
-//     msg:'未定义'
-//   }
-//   next()
-// })
-
 const whiteList = ['/','/api/login','/api/reg']
 
 app.use((req,res,next)=>{
@@ -54,14 +45,16 @@ app.use('/api', reg)
 app.use('/api', login)
 app.use('/api', userinfo)
 
-mongoose.connect('mongodb://localhost:27017/amudb',(err)=>{
+//const uri = "mongodb://localhost:27017/amudb"
+const uri = "mongodb+srv://amu:hiccqiang521@cluster0.n8mbn.mongodb.net/testAm?retryWrites=true&w=majority"
+mongoose.connect(uri,(err)=>{
   if(err){
-    console.log('连接失败')
+    console.log('连接失败',err)
   }else{
     console.log('连接成功')
-    
   }
-})
+});
+
 app.listen(4000,()=>{
-  console.log('Server started on port 4000 http://localhost:4000')
+  console.log('Server started on port http://localhost:4000')
 })
