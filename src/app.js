@@ -48,33 +48,6 @@ app.use((req,res,next)=>{
   }
 })
 
-// app.post('/api/login',(req,res)=>{
-//   // userLists.find((item,index)=>{
-//   //   console.log(index,item.name , loginInfo.name,item.name === loginInfo.name)
-//   //   if(item.name === loginInfo.name){
-//   //     currentIndex = index
-//   //     currentUser =  item
-//   //     console.log('数据库',currentUser)
-//   //     // if(loginInfo.pwd !== currentUser.pwd){
-//   //     //   res.send({
-//   //     //     code:300,
-//   //     //     msg:'密码不正确'
-//   //     //   })
-//   //     //   return
-//   //     // }
-//   //     // let token = createToken(currentUser)
-//   //     // res.json({token})
-//   //   }else{
-//   //     res.send({
-//   //       code:300,
-//   //       msg:'用户不存在'
-//   //     })
-//   //     return
-//   //   }
-//   // })
-  
-// })
-
 app.use(express.static('public'))
 
 app.use('/api', reg)
