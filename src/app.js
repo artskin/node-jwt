@@ -86,8 +86,9 @@ mongoose.connect('mongodb://localhost:27017/amudb',(err)=>{
     console.log('连接失败')
   }else{
     console.log('连接成功')
-    app.listen(4000,()=>{
-      console.log('Server started on port 4000 http://localhost:4000')
-    })
+    
   }
+})
+app.listen(4000,()=>{
+  console.log('Server started on port 4000 http://localhost:4000')
 })
