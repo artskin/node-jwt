@@ -17,6 +17,7 @@ router.post('/reg',(req,res,next)=>{
     }
     
     let user = new User({
+      _id: + new Date(),
       username:username,
       password:md5(new Buffer.from(username).toString('base64').substr(4) + global.SALT_KEY + password)
     })
