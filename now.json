@@ -1,9 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "public/", "use": "@now/static" },
-    { "src": "public/app/index.js", "use": "@now/node-server" }
-  ],
+  "builds": [{ "src": "index.js", "use": "@now/node-server" }],
   "routes": [
     {
       "src": "/users",
@@ -11,8 +8,13 @@
       "methods": ["GET"]
     },
     {
-      "src": "/userinfo",
-      "dest": "public/app/index.js",
+      "src": "/user",
+      "dest": "/index.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/api/userinfo",
+      "dest": "/index.js",
       "methods": ["GET"]
     }
   ]
