@@ -1,7 +1,11 @@
 <template>
-  <div class="reg">
+<div class="login-bg">
+  <div class="login-title">
+    <h1>{{sysInfo.title}}</h1>
+    <p>{{sysInfo.description}}</p>
+  </div>
+  <div class="login-box">
     <h2>登录</h2>
-    
     <form action="">
       <input placeholder="请输入用户名" v-model="form.uname" type="text"><br>
       <input placeholder="请输入用密码" v-model="form.pwd" type="password"><br>
@@ -9,6 +13,7 @@
     </form>
     <code>账号是admin 123456aa</code>
   </div>
+</div>
 </template>
 <script type="module">
 const { reactive,computed,toRefs,watchEffect,renderTemplate,createApp,getCurrentInstance } = Vue;
@@ -23,6 +28,7 @@ export default {
     //console.log(Vue)
     const router = useRouter()
     const state = reactive({
+      sysInfo:vm.sysInfo,
       form:{
         uname:'admin',
         pwd:'123456aa',

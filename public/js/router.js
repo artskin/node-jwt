@@ -1,6 +1,5 @@
 const { defineAsyncComponent } = Vue;
 const Home = { template: '<div>Home</div>' }
-const Login = { template: '<div>登录</div>' }
 const { loadModule } = window['vue3-sfc-loader'];
 
 const sfcContent = `
@@ -15,7 +14,7 @@ const options = {
   getFile(url) {
     console.log(url)
     // if ( url === './myComponent.vue' )
-    //   return Promise.resolve(sfcContent);
+    // return Promise.resolve(sfcContent);
     return fetch(url).then(res => res.ok ? res.text() : Promise.reject( new Error(res.statusText) ));
   },
   addStyle() {},
@@ -26,6 +25,7 @@ const AsyncComp = defineAsyncComponent({
 const routes = [
   {
     path:'/',
+    redirect:'/reg',
     component: Home,
   },
   {

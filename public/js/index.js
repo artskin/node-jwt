@@ -14,7 +14,10 @@ const App = {
   mixins: [myMixin],
   data() {
     return {
-      counter: 0
+      sysInfo:{
+        title:'JWT 登录系统',
+        description:'基于Node + Express + MongoDB + Vue3 开发',
+      }
     }
   }
 }
@@ -24,6 +27,6 @@ app.use(router)
 //Vue.prototype.$http = http
 
 window.vm = app.mount('#app')
-console.log(Vue)
-console.log(app)
-console.log(window.vm)
+// console.log(Vue)
+// console.log(app)
+// console.log(window.vm)

@@ -1,12 +1,56 @@
-body{margin: 0;padding: 5px;}
+
+html,body,#app{
+  height: 100%;
+  margin: 0;padding:0;
+}
+body{
+  background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top, rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg, #670d10 0%, #092756 100%);
+  background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg, #670d10 0%,#092756 100%);
+  background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg, #670d10 0%,#092756 100%);
+  background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg, #670d10 0%,#092756 100%);
+  background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg, #670d1085 0%,#0927568f 100%);
+}
+#app{
+  overflow: hidden;
+}
+.footer{
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+}
+.login-bg{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-title{
+  color: #fff;
+  padding-right: 30px;
+  padding-bottom: 100px;
+}
+.login-box{
+  width: 360px;
+  background-color:#fff;
+  border-radius: 10px;
+  padding: 30px 30px 50px;
+  box-sizing: border-box;
+  
+}
+.login-box input,.login-box button{width: 100%;box-sizing: border-box;}
+hr{
+  border: none;
+  border-bottom:1px solid #ddd;
+}
 .paper{
   width: 800px;
   margin: 0 auto;
 }
 
 button,input{
-  border: none;
-  padding: 8px;
+  /* border: none; */
+  padding: 12px;
 	line-height: 1;
 }
 .btn{background: #fc0;border-radius: 3px;font-size: 15px;padding-left: 15px;padding-right: 15px;color: #fff; }
@@ -17,4 +61,11 @@ button,input{
 input{
   border:1px solid #ccc;
   margin-bottom: 15px;
+}
+button{
+  border:1px solid #eee;
+}
+.ucenter{
+  color: #fff;
+  padding: 20px;
 }

@@ -22,7 +22,11 @@ router.post('/reg',(req,res,next)=>{
       password:md5(new Buffer.from(username).toString('base64').substr(4) + global.SALT_KEY + password)
     })
     user.save()
-    res.json(req.body);
+    res.json({
+      code:200,
+      msg:'注册成功',
+      ...req.body
+    });
   })
 })
 

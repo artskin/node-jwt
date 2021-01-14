@@ -1,5 +1,5 @@
 <template>
-  <div class="reg">
+  <div class="ucenter">
     <h2>欢迎，{{userInfo.username}}</h2>
     <pre>{{userInfo}}</pre>
   </div>
