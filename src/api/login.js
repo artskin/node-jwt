@@ -24,10 +24,10 @@ router.post('/login',(req,res,next)=>{
     username:username,
     password:md5(new Buffer.from(username).toString('base64').substr(4) + global.SALT_KEY + password)
   }
-  console.log(loginInfo)
+  //console.log(loginInfo)
   User.findOne(loginInfo,(err,result)=>{
     if(result){
-      console.log(result)
+      //console.log(result)
       let token = createToken(loginInfo);
       res.json({
         code:200,

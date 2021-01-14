@@ -30,6 +30,7 @@ app.use((req,res,next)=>{
   if(req.url.includes('api') && !whiteList.includes(req.url)){
     //console.log(req.headers.authorization)
     verifyToken(req.headers.authorization).then(res =>{
+      //console.log('token有效',res)
       next()
     }).catch(err=>{
       res.status(401);//.send('token 无效')

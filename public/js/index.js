@@ -1,13 +1,17 @@
 import router from './router.js'
 import $http from './request.js'
-//console.log(http)
-const { reactive,computed,toRefs,watchEffect,renderTemplate,createApp } = Vue;
+
+const {createApp } = Vue;
 const myMixin = {
   created() {
-    //this.hello()
+    //this.$http()
   },
   methods: {
-    $http
+    $http,
+    loginOut: () =>{
+      window.localStorage.removeItem('token')
+      router.push('/login')
+    }
   }
 }
 const App = {
@@ -23,9 +27,6 @@ const App = {
 }
 const app = Vue.createApp(App);
 app.use(router)
-
-//Vue.prototype.$http = http
-
 window.vm = app.mount('#app')
 // console.log(Vue)
 // console.log(app)

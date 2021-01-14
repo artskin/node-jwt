@@ -5,6 +5,7 @@ const User = require('../models/User');
 
 router.get('/userinfo',(req,res,next)=>{
   let loginInfo = req.params;
+  
   User.findOne(loginInfo,(err,doc)=>{
     if(doc){
       res.json({

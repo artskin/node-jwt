@@ -4,7 +4,7 @@ const scret = "2020atdataname";
 //生成token
 const createToken = (info)=>{
   let token = jwt.sign(info,scret,{
-    expiresIn: 60 * 60 * 5
+    expiresIn: 60  * 10
   })
   return token
 }
@@ -13,6 +13,7 @@ const createToken = (info)=>{
 const verifyToken = (token) =>{
   return new Promise((resolve,reject)=>{
     jwt.verify(token,scret,(err,result)=>{
+      console.log('校验结果',err,result)
       if(err){
         reject(err)
       }else{

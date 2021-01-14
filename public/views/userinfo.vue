@@ -14,11 +14,12 @@ export default {
     //const router = useRouter()
     const state = reactive({
       userInfo:{
-        uname:'',
-        pwd:'',
+        username:'',
+        password:'',
       }
     })
     const route = useRoute()
+    const router = useRouter()
     // watch((val)=>{
     //   state.userInfo.id = route.query.id
     // })
@@ -40,26 +41,17 @@ export default {
         console.log(res)
         state.userInfo = res
       }).catch(err=>{
-        console.log(err)
+        if(err){
+          alert(err.data.msg)
+          vm.loginOut()
+        }
       })
-      //axios.defaults.headers['authorization'] = window.localStorage.getItem('token');
-      // axios({
-      //   url: '/api/userinfo',
-      //   method: 'get',
-      //   params:{
-      //     id:state.userInfo.id
-      //   }
-      // }).then((res)=>{
-      //   console.log(res)
-      //   state.userInfo = res.data
-      // }).catch(err=>{
-      //   console.log(err)
-      // })
     }
 
     return {
       ...toRefs(state),
-      getUserInfo
+      getUserInfo,
+
     }
   }
 }

@@ -1,4 +1,3 @@
-//const {axios} = axios;
 
 let isLogout = false;
 let SECOND   = 1000;
@@ -32,10 +31,8 @@ $http.interceptors.response.use(
     }else{
       return Promise.reject(res);
     }
-    
   },
   (error)=>{
-    //console.log(err)
     return Promise.reject(error);
   }
 )
