@@ -54,6 +54,8 @@ export default {
             path:'/userinfo',
             query:{id:res.id}
           })
+        }else{
+          alert(res.msg)
         }
         //console.log(res)
       })
