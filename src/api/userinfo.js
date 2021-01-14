@@ -14,7 +14,7 @@ router.get('/userinfo',(req,res,next)=>{
         msg:'成功'
       })
     }else{
-      res.send({
+      res.json({
         code:400,
         msg:'用户或密码不正确'
       })

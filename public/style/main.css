@@ -39,6 +39,9 @@ body{
   color: #555679;
 }
 .login-box input,.login-box button{width: 100%;box-sizing: border-box;}
+.login-box p{
+  font-size: 14px;
+}
 hr{
   border: none;
   border-bottom:1px solid #ddd;

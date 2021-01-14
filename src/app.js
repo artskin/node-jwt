@@ -33,7 +33,7 @@ app.use((req,res,next)=>{
       //console.log('token有效',res)
       next()
     }).catch(err=>{
-      res.status(401);//.send('token 无效')
+      //res.status(401);//.send('token 无效')
       res.json({
         code:401,
         msg:'token无效'

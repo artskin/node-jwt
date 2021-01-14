@@ -39,11 +39,16 @@ export default {
     const getUserInfo = ()=>{
       getUser(state.userInfo.id).then(res=>{
         console.log(res)
-        state.userInfo = res
+        if(res.code == 200){
+          state.userInfo = res
+        }else{
+          alert(res.msg)
+          vm.loginOut()
+        }
+        
       }).catch(err=>{
         if(err){
-          alert(err.data.msg)
-          vm.loginOut()
+          
         }
       })
     }
