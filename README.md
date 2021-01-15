@@ -13,5 +13,7 @@ nodejs + express + mongodb + vue3
 - [x] 校验verifyToken
 - [x] 获取用户信息
 - [x] token过期退出
-- [ ] 建立socket 服务/频道，客户端与socket 通讯
+- [ ] 更新refreshToken
+- [x] websocket:建立长连接，断开连接，消息通讯（Client→Server,Server→Client）
+- [ ] websocket:断开重连？ 频道
  

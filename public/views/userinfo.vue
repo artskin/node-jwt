@@ -2,6 +2,15 @@
   <div class="ucenter">
     <h2>欢迎，{{userInfo.username}}</h2>
     <pre>{{userInfo}}</pre>
+    <div class="terminal">
+      <p v-for="item in msgList" :key="item.id">
+        <em class="time">{{item.from}} {{item.time}}</em>: <strong>{{item.msg}}</strong>
+      </p>
+    </div>
+    <input v-model="socket.msg" type="text">
+    <button @click="sendMsg">发送</button>
+    <button @click="offSocket">断开</button>
+    <button @click="connectWS">重连</button>
   </div>
 </template>
 <script>
@@ -16,10 +25,39 @@ export default {
       userInfo:{
         username:'',
         password:'',
-      }
+      },
+      socket:{
+        msg:'',
+        link:'/'
+      },
+      msgList:[]
     })
     const route = useRoute()
     const router = useRouter()
+
+    const socket = io.connect('/')
+
+    const connectWS = () => {
+      console.log('连接?',io())
+      console.log(socket)
+      io.connect(state.socket.link)
+    }
+
+    const sendMsg =() => {
+      let msg = state.socket.msg;
+      socket.emit('sendToServer',msg)
+    }
+    socket.on('sendToClient',msg =>{
+      console.log('服务器发给客户端',msg)
+      state.msgList.push(msg)
+    })
+
+    const offSocket = ()=>{
+      console.log(io())
+      if(socket){
+        socket.disconnect()
+      }
+    }
     // watch((val)=>{
     //   state.userInfo.id = route.query.id
     // })
@@ -56,7 +94,9 @@ export default {
     return {
       ...toRefs(state),
       getUserInfo,
-
+      connectWS,
+      sendMsg,
+      offSocket
     }
   }
 }
