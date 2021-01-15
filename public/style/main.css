@@ -1,4 +1,6 @@
-
+html{
+  background-color: #ccc;
+}
 html,body,#app{
   height: 100%;
   margin: 0;padding:0;
@@ -19,7 +21,9 @@ body{
   text-align: center;
   width: 100%;
   font-size: 12px;
+  color: #3a3b4e;
 }
+.footer a{color: #2a2b42;}
 .login-bg{
   height: 100%;
   display: flex;
