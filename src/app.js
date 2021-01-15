@@ -8,6 +8,7 @@ global.SALT_KEY="amu@521"
 const reg = require('./api/reg')
 const login = require('./api/login')
 const userinfo = require('./api/userinfo')
+//const captcha = require('./api/captcha')
 
 const app = express()
 app.use((req,res,next)=>{
@@ -23,7 +24,7 @@ app.use((req,res,next)=>{
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const whiteList = ['/','/api/login','/api/reg']
+const whiteList = ['/','/api/login','/api/reg','/api/captcha']
 
 app.use((req,res,next)=>{
   console.log(req.url)
@@ -49,6 +50,7 @@ app.use(express.static('public'))
 app.use('/api', reg)
 app.use('/api', login)
 app.use('/api', userinfo)
+//app.use('/api', captcha)
 app.listen(4000,()=>{
   console.log('Server started on port http://localhost:4000')
 })

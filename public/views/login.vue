@@ -9,8 +9,13 @@
     <form action="">
       <input placeholder="请输入用户名" v-model="form.uname" type="text"><br>
       <input placeholder="请输入用密码" v-model="form.pwd" type="password"><br>
+      <div class="flex">
+        <input style="width:50%" placeholder="请输入验证码" v-model="form.captcha" type="text">
+        <img style="width:50%" @click="getCaptcha" class="captcha" :src="captchaUrl" alt="点击更新" title="点击更新">
+      </div>
       <button @click="loginFn">登录</button>
     </form>
+    
     <p>
       没有账号，请先 <router-link to="/reg">注册</router-link>
     </p>
@@ -18,7 +23,7 @@
 </div>
 </template>
 <script type="module">
-const { reactive,computed,toRefs,watchEffect,renderTemplate,getCurrentInstance } = Vue;
+const { reactive,computed,toRefs,watchEffect,renderTemplate,onMounted,getCurrentInstance } = Vue;
 const { useRouter, useRoute } = VueRouter;
 
 
@@ -31,14 +36,33 @@ export default {
       form:{
         uname:'admin',
         pwd:'123456aa',
-      }
+        captcha:''
+      },
+      captchaUrl:'/api/captcha'
     })
+    onMounted(()=>{
+      //getCaptcha()
+    })
+    const getCaptcha=(e)=>{
+      new Promise((resolve)=>{
+        state.captchaUrl = ''
+        resolve()
+      }).then(()=>{
+        state.captchaUrl = '/api/captcha'
+      })
+      // vm.$http({
+      //   url: '/api/captcha',
+      //   method: 'get'
+      // }).then(res=>{
+      // })
+    }
     
     const loginFn = (e)=>{
       e.preventDefault();
       let params = {
         username:state.form.uname,
-        password:btoa(state.form.pwd)
+        password:btoa(state.form.pwd),
+        captcha:state.form.captcha
       }
       vm.$http({
         url: '/api/login',
@@ -60,7 +84,8 @@ export default {
     }
     return {
       ...toRefs(state),
-      loginFn
+      loginFn,
+      getCaptcha
     }
   }
 }

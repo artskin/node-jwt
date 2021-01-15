@@ -16,10 +16,29 @@ const md5 = require('blueimp-md5')
 //   }
 // ]
 // const currentIndex = 0;
+const svgCaptcha = require('svg-captcha')
+let captchaValue = ''
+
+router.get('/captcha',(req,res,next)=>{
+  let captcha = svgCaptcha.create({
+    height:41
+  });
+  captchaValue = captcha.text
+  //req.session.captcha = captcha.text;
+  res.type('svg')
+  res.send(captcha.data)
+})
 
 router.post('/login',(req,res,next)=>{
-  //let loginInfo = req.body;
-  const {username,password} = req.body;
+  const {username,password,captcha} = req.body;
+  if(captcha !==captchaValue){
+    res.send({
+      code:400,
+      msg:'验证码不正确'
+    })
+    return
+  }
+  captchaValue = null;
   const loginInfo ={
     username:username,
     password:md5(new Buffer.from(username).toString('base64').substr(4) + global.SALT_KEY + password)
