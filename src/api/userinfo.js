@@ -2,9 +2,9 @@ const router = require("express").Router();
 const User = require('../models/User');
 
 router.get('/userinfo',(req,res,next)=>{
-  let loginInfo = req.params;
-  
-  User.findOne(loginInfo,(err,doc)=>{
+  let loginInfo = req.query;
+  User.findOne({_id:Number(loginInfo.id)},(err,doc)=>{
+    console.log('登录结果',doc)
     if(doc){
       res.json({
         code:200,

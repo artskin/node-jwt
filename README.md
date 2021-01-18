@@ -3,6 +3,31 @@
 nodejs + express + mongodb + vue3
 实现jwt登录
 
+## 目录
+
+```bash
+root/
+├─ src/ # node server code
+│  ├─ api/ # node api
+│  │  ├─ login/ # /login登录接口
+│  │  │  └─ ...
+│  ├─ db/ # 数据库连接
+│  ├─ models/ # 
+│  │  ├─ User/ # 
+│  │  └─ / # 
+│  └─ app.js/ # node 入口文件
+├─ public/ # 前端文件：入口文件，配置，第三方包，不走编译
+│  ├─ views/ # vue路由页面
+│  ├─ js/ # 前端js
+│  │  ├─ lib/ # /第三方js库
+│  │  └─ ... 
+│  ├─ styles/ # 样式文件
+│  ├─ app_config.js # 项目默认配置，接口默认地址
+│  └─ index.html # 前端入口文件
+├─ package.json  # 项目依赖配置
+└─ ...
+```
+
 
 ## todo 
 

@@ -55,8 +55,5 @@ require('./api/socket_server')(server);
 server.listen(3000,()=>{
   console.log('Server started on port http://localhost:3000')
 })
-// app.listen(4000,()=>{
-//   console.log('Server started on port http://localhost:4000')
-// })
 
 require('./db/index')(app);
