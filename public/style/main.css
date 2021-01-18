@@ -88,7 +88,14 @@ body{
   color: #555679;
 }
 .login-box input,
-.login-box button{width: 100%;box-sizing: border-box;padding: 11px;}
+.login-box button,
+.btn-big{
+  box-sizing: border-box;
+  padding: 11px;
+}
+.login-box input,
+.login-box button{width: 100%;}
+
 .login-box p{
   font-size: 14px;
 }

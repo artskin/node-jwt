@@ -8,12 +8,17 @@ let captchaValue = ''
 
 router.get('/captcha',(req,res,next)=>{
   let captcha = svgCaptcha.create({
-    height:41
+    height:40
   });
   captchaValue = captcha.text
-  //req.session.captcha = captcha.text;
-  res.type('svg')
-  res.send(captcha.data)
+
+  let data = `data:image/svg+xml;base64,${new Buffer.from(unescape(encodeURIComponent(captcha.data))).toString('base64')}`;
+
+  res.json({
+    code:200,
+    data:data
+  })
+  //res.send(captcha.data)
 })
 
 router.post('/login',(req,res,next)=>{

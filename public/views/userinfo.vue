@@ -15,7 +15,7 @@
       <p>
         <textarea v-model="socket.msg" placeholder="输入消息"></textarea>
       </p>
-      <p><button @click="sendMsg">发送</button></p>
+      <p><button class="btn-big" @click="sendMsg">发送</button></p>
     </div>
   </div>
 </template>
