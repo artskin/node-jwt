@@ -2,15 +2,17 @@
   <div class="ucenter">
     <h2>欢迎，{{userInfo.username}}</h2>
     <pre>{{userInfo}}</pre>
-    <div class="terminal">
-      <p v-for="item in msgList" :key="item.id">
-        <em class="time">{{item.from}} {{item.time}}</em>: <strong>{{item.msg}}</strong>
-      </p>
-    </div>
-    <input v-model="socket.msg" type="text">
-    <button @click="sendMsg">发送</button>
     <button @click="offSocket">断开</button>
     <button @click="connectWS">重连</button>
+    <div class="terminal">
+      <p v-for="item in msgList" :key="item.id">
+        <em class="time">{{item.time}}</em><span class="tag">{{item.username}}</span>: <strong>{{item.msg}}</strong>
+      </p>
+    </div>
+    <div class="chat-handle">
+      <textarea v-model="socket.msg" placeholder="输入消息"></textarea>
+      <button @click="sendMsg">发送</button>
+    </div>
   </div>
 </template>
 <script>
@@ -44,9 +46,17 @@ export default {
     }
 
     const sendMsg =() => {
-      let msg = state.socket.msg;
-      socket.emit('sendToServer',msg)
+      let info = {
+        username:state.userInfo.username,
+        time:new Date().toLocaleString('chinese',{hour12:false}),
+        msg:state.socket.msg
+      };
+      socket.emit('sendToServer',info)
+      state.socket.msg = ''
     }
+    socket.on('sendToClientHistory',msgs=>{
+      state.msgList = msgs
+    })
     socket.on('sendToClient',msg =>{
       console.log('服务器发给客户端',msg)
       state.msgList.push(msg)

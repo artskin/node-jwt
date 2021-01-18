@@ -27,6 +27,7 @@ body{
   width: 100%;
   font-size: 12px;
   color: #3a3b4e;
+  opacity: .8;
 }
 .footer a{color: #2a2b42;}
 .login-bg{
@@ -91,9 +92,11 @@ button{
   overflow-y: auto;
   padding: 10px;
 }
-.terminal p{margin: .3em;}
+.terminal p{margin: .4em;}
 .terminal .time{color: #555679;font-style: normal;font-size: 12px;padding-right: 5px;}
 .terminal strong{padding-left: 10px;}
+.terminal .tag{ background-color: #191135;border-radius: 2px;padding: 0 .2em;}
+.chat-handle textarea{width: 100%;box-sizing: border-box;}
 @media screen and (max-width:768px) {
   .login-bg{
     flex-direction:column
