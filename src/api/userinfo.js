@@ -1,7 +1,5 @@
 const router = require("express").Router();
-const {createToken,verifyToken} = require('../token.js');
 const User = require('../models/User');
-
 
 router.get('/userinfo',(req,res,next)=>{
   let loginInfo = req.params;
