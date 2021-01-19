@@ -8,7 +8,10 @@ let captchaValue = ''
 
 router.get('/captcha',(req,res,next)=>{
   let captcha = svgCaptcha.create({
-    height:40
+    height:40,
+    size: 6,
+    noise: 3,
+    charPreset:'@#$%ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   });
   captchaValue = captcha.text
 

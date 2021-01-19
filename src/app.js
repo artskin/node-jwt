@@ -57,3 +57,5 @@ server.listen(3000,()=>{
 })
 
 require('./db/index')(app);
+
+require('./ws/server')

@@ -38,27 +38,17 @@ export default {
         pwd:'123456aa',
         captcha:''
       },
-      captchaUrl:'/api/captcha'
+      captchaUrl:''
     })
     onMounted(()=>{
       getCaptcha()
     })
     const getCaptcha=(e)=>{
-      // new Promise((resolve)=>{
-      //   state.captchaUrl = ''
-      //   resolve()
-      // }).then(()=>{
-      //   setTimeout(()=>{
-      //     //state.captchaUrl = '/api/captcha'
-      //   },100)
-        
-      // })
       vm.$http({
         url: '/api/captcha',
         method: 'get'
       }).then(res=>{
         state.captchaUrl = res.data
-        //console.log(res)
       })
     }
     

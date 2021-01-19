@@ -69,7 +69,6 @@ export default {
     
 
     const offSocket = ()=>{
-      console.log(io())
       if(socket){
         socket.disconnect()
       }

@@ -39,7 +39,7 @@ root/
 - [x] 获取用户信息
 - [x] token过期退出
 - [ ] 更新refreshToken
-- [x] websocket:建立长连接，断开连接，消息通讯（Client→Server,Server→Client）
-- [ ] websocket:消息保存，预读取最近10条
-- [ ] websocket:断开重连？ 频道
+- [x] websocket:建立长连接，断开连接/断开重连，消息通讯（Client→Server,Server→Client）
+- [x] websocket:消息保存，预读取最近10条
+- [ ] websocket:频道
  
