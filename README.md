@@ -41,5 +41,5 @@ root/
 - [ ] 更新refreshToken
 - [x] websocket:建立长连接，断开连接/断开重连，消息通讯（Client→Server,Server→Client）
 - [x] websocket:消息保存，预读取最近10条
-- [ ] websocket:频道
+- [ ] websocket:频道? ws库
  

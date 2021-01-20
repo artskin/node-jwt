@@ -2,6 +2,7 @@
 node_modules
 /dist
 public/rtsp/
+public/ml5/
 
 # local env files
 .env.local
