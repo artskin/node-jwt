@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <meta name="renderer" content="webkit">
+  <title>用户信息</title>
+  <meta name="description" content="首页描述"/>
+  <meta name="keywords" content="首页关键词"/>
+  <meta name="author" content="Web Layout:amu"/>
+  <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"/>
+  <link rel="stylesheet" href="./style/main.css?v=2">
+  <style>
+    .video{
+      width: 600px;
+      height: 400px;
+    }
+    .video video{
+      width: 100%;
+    }
+    .video canvas{
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="video">
+    <!-- <video controls poster="./images/0001.jpg" class="hide"></video> -->
+      <!-- <source src="https://roblin.cn/wasm/video/h265_high.mp4"> -->
+      <!-- <source src="./images/media/spreedmovie.hevc"> -->
+      <!-- <source src="./media/flower.webm" type="video/webm; codecs=vp9"> -->
+      <!-- <source src="./rtsp/video-h265.mkv" type="video/mkv; codecs=hevc"> -->
+    
+    <canvas></canvas>
+    <button class="play">△</button>
+  </div>
+  <canvas id="video" width="0" height="0"></canvas>
+  <button id="play">Play</button>
+    <span id="status"></span>
+</body>
+<script src="./js/lib/libde265.js"></script>
+<script>
+  
+  let videoPlus = document.querySelector('.video')
+  let video = document.createElement('video')
+  video.src = './media/flower.webm'
+  video.controls = true
+  let canvas = videoPlus.querySelector('canvas')
+  let ctx = canvas.getContext('2d');
+  let width = canvas.width
+  let height = canvas.height
+  //video.autoplay = true
+
+  document.querySelector('.play').onclick = () =>{
+    console.log(video)
+    video.play()
+  }
+  render()
+  function render(){
+    //console.log(video)
+    window.requestAnimationFrame(render)
+    ctx.clearRect(0,0,width,height);
+    ctx.drawImage(video,0,0,width,height)
+  }
+  
+</script>
+<script>
+//var VIDEO_URL = "./spreedmovie.hevc";
+var VIDEO_URL = "https://roblin.cn/wasm/video/h265_high.mp4";
+var player = null;
+
+window.onload = function() {
+  var video = document.getElementById("video");
+  var status = document.getElementById("status");
+
+  var playback = function(event) {
+
+      event.preventDefault();
+      if (player) {
+          player.stop();
+      }
+
+      player = new libde265.RawPlayer(video);
+      player.set_status_callback(function(msg, fps) {
+          switch (msg) {
+          case "loading":
+              status.innerHTML = "Loading movie...";
+              break;
+          case "initializing":
+              status.innerHTML = "Initializing...";
+              break;
+          case "playing":
+              status.innerHTML = "Playing...";
+              break;
+          case "stopped":
+              status.innerHTML = "";
+              break;
+          case "fps":
+              status.innerHTML = Number(fps).toFixed(2) + " fps";
+              break;
+          default:
+              status.innerHTML = msg;
+          }
+      });
+      player.playback(VIDEO_URL);
+  };
+
+  var button = document.getElementById("play");
+  console.log(button.addEventListener)
+  // if (button.addEventListener) {
+      button.addEventListener("click", playback, false);
+  // } else if (button.attachEvent){
+  //     button.attachEvent('onclick', playback);
+  // }
+}
+</script>
+</html>
