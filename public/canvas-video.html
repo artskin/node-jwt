@@ -34,18 +34,54 @@
     
     <canvas></canvas>
     <button class="play">△</button>
+    <div id="videoControls"> 
+      <div id="progressWrap">  
+          <div id="playProgress">  
+              <span id="showProgress">0</span> 
+          </div>
+      </div>
+    </div>
+    <br/>
+    <div>
+        <button onclick="scalemini()">缩小</button>
+        <button onclick="scalelarge()">放大</button>
+        <button onclick="playVideo()">播放/暂停</button>
+        <button onclick="hiddenVideo()">显示/隐藏</button>
+        <button onclick="changeStyle()">转换风格</button>
+    </div>
+    <p>
+        添加字幕：
+        <input type="text">
+        <button id="submit">提交</button>
+    </p>
   </div>
-  <canvas id="video" width="0" height="0"></canvas>
+
+
+  <!-- <canvas id="video" width="0" height="0"></canvas>
   <button id="play">Play</button>
-    <span id="status"></span>
+    <span id="status"></span> -->
 </body>
-<script src="./js/lib/libde265.js"></script>
+<!-- <script src="./js/lib/libde265.js"></script> -->
 <script>
-  
-  let videoPlus = document.querySelector('.video')
   let video = document.createElement('video')
   video.src = './media/flower.webm'
   video.controls = true
+  const supportHEVC = (video) => {  
+    console.log(video.canPlayType)
+    if (typeof video.canPlayType == 'function') {
+      let playable = video.canPlayType('video/mp4; codecs=hevc');
+      console.log(playable)
+      if ((playable.toLowerCase() == 'maybe') || (playable.toLowerCase() == 'probably')) {
+        return true;
+      }
+    }
+    return false;
+  };
+  console.log(supportHEVC(video))
+
+  let wordObj = []
+  let videoPlus = document.querySelector('.video')
+  
   let canvas = videoPlus.querySelector('canvas')
   let ctx = canvas.getContext('2d');
   let width = canvas.width
@@ -56,13 +92,132 @@
     console.log(video)
     video.play()
   }
+  //TODO: https://blog.csdn.net/janelittle/article/details/81670021
+  let myEvent = new Event('data')
+  console.log(myEvent)
+
+  //Event.listen('data', this.addNewWord.bind(this));
   render()
   function render(){
     //console.log(video)
     window.requestAnimationFrame(render)
     ctx.clearRect(0,0,width,height);
     ctx.drawImage(video,0,0,width,height)
+    let imageData = ctx.getImageData(0,0,width,height);
+                let data = imageData.data;
+                for(let i=0;i<data.length;i+=4){
+                    let average = (data[i+0]+data[i+1]+data[i+2])/3;
+                    data[i+0] = average;
+                    data[i+1] = average;
+                    data[i+2] = average;
+                }
+                //ctx.putImageData(imageData,0,0)
+                wordObj.forEach(function (item, index) {
+                    item.draw()
+                })
   }
+  //添加新增弹幕事件监听
+ document.querySelector('#submit').onclick = ()=> {
+   console.log('ss')
+            var data = document.querySelector('input').value
+            Event.trigger('data', {
+                value: data,
+            })
+        }
+//控制视频进度条
+var videoControls = document.getElementById("videoControls");
+        var progressWrap = document.getElementById("progressWrap");
+        var playProgress = document.getElementById("playProgress");
+        var showProgress = document.getElementById("showProgress");
+        var progressFlag;
+  // 创建我们的操作对象，我们的所有操作都在这个对象上。
+  var videoPlayer = {
+      init: function(){
+          videoPlayer.operateControls();
+          bindEvent(video, "loadeddata", videoPlayer.showHideControls);
+      },
+      showHideControls: function(){
+          bindEvent(canvas, "mouseover", showControls);
+          bindEvent(videoControls, "mouseover", showControls);
+          bindEvent(canvas, "mouseout", hideControls);
+          bindEvent(videoControls, "mouseout", hideControls);
+      },
+      operateControls: function(){
+          bindEvent(canvas,"click", playVideo);
+          bindEvent(progressWrap, "mousedown", videoSeek);
+      }
+  }
+
+  videoPlayer.init();
+  // 原生的JavaScript事件绑定函数
+  function bindEvent(ele, eventName, func){
+      if(window.addEventListener){
+          ele.addEventListener(eventName, func);
+      }
+      else{
+          ele.attachEvent('on' + eventName, func);
+      }
+  }
+// 显示video的控制面板
+function showControls(){
+            videoControls.style.opacity = 1;
+        }
+        // 隐藏video的控制面板
+        function hideControls(){
+            // 为了让控制面板一直出现，我把videoControls.style.opacity的值改为1
+            videoControls.style.opacity = 0;
+        }
+  // 控制video的播放
+  function playVideo(){
+    if ( video.paused || video.ended ){              
+      if ( video.ended ){ 
+          video.currentTime = 0;
+      } 
+      video.play();
+      progressFlag = setInterval(getProgress, 60);
+    } 
+    else{ 
+      video.pause();
+      clearInterval(progressFlag);
+    } 
+  }
+
+  // 鼠标在播放条上点击时进行捕获并进行处理
+  function videoSeek(e){
+    if(video.paused || video.ended){
+        playVideo();
+        enhanceVideoSeek(e);
+    }
+    else{
+        enhanceVideoSeek(e);
+    }
+  }
+
+  // video的播放条
+  function getProgress(){
+      var percent = video.currentTime / video.duration;
+      playProgress.style.width = percent * (progressWrap.offsetWidth) - 2 + "px";
+      showProgress.innerHTML = (percent * 100).toFixed(1) + "%";
+  }
+  //新增弹幕
+  function addNewWord(data){
+            var newWord = new Barrage(canvas,ctx, data)
+            wordObj.push(newWord)
+        }
+
+        //缩小视频
+        function scalemini(){
+            ctx.clearRect(0, 0,width,height)
+            width=width/1.5;
+            height=height/1.5;
+        }
+
+        //放大视频
+        function scalelarge(){
+            ctx.clearRect(0, 0,width,height)
+            width=width*1.5;
+            height=height*1.5;
+        }
   
 </script>
 <script>
@@ -106,10 +261,10 @@ window.onload = function() {
       player.playback(VIDEO_URL);
   };
 
-  var button = document.getElementById("play");
-  console.log(button.addEventListener)
+  //var button = document.getElementById("play");
+  //console.log(button.addEventListener)
   // if (button.addEventListener) {
-      button.addEventListener("click", playback, false);
+      //button.addEventListener("click", playback, false);
   // } else if (button.attachEvent){
   //     button.attachEvent('onclick', playback);
   // }
