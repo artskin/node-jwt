@@ -1,6 +1,7 @@
+@btn-big:{padding: 11px;}
+
 :root{
   --blue: #555679;
-  --scrollbar-color:var(--blue)
 }
 html{
   background-color: #ccc;
@@ -30,6 +31,7 @@ button{
   color: #fff;
 }
 .btn-small{font-size: 12px;padding: 4px;border-radius: 2px;}
+.btn-big{@btn-big()}
 :focus{
   outline: none;
   box-shadow:inset 0 0 2px rgba(58, 42, 87, 0.4);
@@ -67,8 +69,8 @@ body{
   font-size: 12px;
   color: #3a3b4e;
   opacity: .8;
+  a{color: #2a2b42;}
 }
-.footer a{color: #2a2b42;}
 .login-bg{
   height: 100%;
   display: flex;
@@ -86,18 +88,15 @@ body{
   padding: 30px 30px 50px;
   box-sizing: border-box;
   color: #555679;
-}
-.login-box input,
-.login-box button,
-.btn-big{
-  box-sizing: border-box;
-  padding: 11px;
-}
-.login-box input,
-.login-box button{width: 100%;}
-
-.login-box p{
-  font-size: 14px;
+  input,
+  button{
+    width: 100%;
+    box-sizing: border-box;
+    @btn-big();
+  }
+  p{
+    font-size: 14px;
+  }
 }
 
 .paper{
@@ -120,11 +119,12 @@ body{
   height: 200px;
   overflow-y: auto;
   padding: 10px;
+  .time{color: #555679;font-style: normal;font-size: 12px;padding-right: 5px;}
+  strong{padding-left: 10px;}
+  .tag{ background-color: #191135;border-radius: 2px;padding: 0 .2em;}
 }
 
-.terminal .time{color: #555679;font-style: normal;font-size: 12px;padding-right: 5px;}
-.terminal strong{padding-left: 10px;}
-.terminal .tag{ background-color: #191135;border-radius: 2px;padding: 0 .2em;}
+
 .chat-handle textarea{width: 100%;box-sizing: border-box;}
 @media screen and (max-width:768px) {
   .login-bg{
@@ -141,7 +141,7 @@ body{
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-color);
+  background: var(--blue);
   border-radius: 5px;
 }
 
