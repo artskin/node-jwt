@@ -11,7 +11,8 @@
       <input placeholder="请输入用密码" v-model="form.pwd" type="password"><br>
       <div class="flex">
         <input style="width:50%" placeholder="请输入验证码" v-model="form.captcha" type="text">
-        <img style="width:50%" @click="getCaptcha" class="captcha" :src="captchaUrl" alt="点击更新" title="点击更新">
+        <div ref="captcha" class="captcha" @click="getCaptcha">1</div>
+        <!-- <img style="width:50%" @click="getCaptcha" class="captcha" :src="captchaUrl" alt="点击更新" title="点击更新"> -->
       </div>
       <button @click="loginFn">登录</button>
     </form>
@@ -23,7 +24,7 @@
 </div>
 </template>
 <script type="module">
-const { reactive,computed,toRefs,watchEffect,renderTemplate,onMounted,getCurrentInstance } = Vue;
+const { reactive,computed,toRefs,watchEffect,renderTemplate,onMounted,ref,getCurrentInstance } = Vue;
 const { useRouter, useRoute } = VueRouter;
 
 
@@ -40,21 +41,38 @@ export default {
       },
       captchaUrl:'/api/captcha'
     })
+    const captcha = ref(null)
     onMounted(()=>{
       //getCaptcha()
     })
     const getCaptcha=(e)=>{
-      new Promise((resolve)=>{
-        state.captchaUrl = ''
-        resolve()
-      }).then(()=>{
-        state.captchaUrl = '/api/captcha'
-      })
-      // vm.$http({
-      //   url: '/api/captcha',
-      //   method: 'get'
-      // }).then(res=>{
+      state.captchaUrl = ''
+      //console.log(captcha.value.style.background = '#ddd')
+      // setTimeout(()=>{
+      //   state.captchaUrl = '/api/captcha'
+      // },200)
+      // new Promise((resolve)=>{
+        
+      //   resolve()
+      // }).then(()=>{
+        
       // })
+      // let imgC = new Image();
+      // imgC.src = '/api/captcha'
+      // imgC.onload=(e)=>{
+      //   console.log(e)
+      //   state.captchaUrl = '/api/captcha'
+      // }
+      vm.$http({
+        url: '/api/captcha',
+        method: 'get'
+      }).then(res=>{
+        let bgimg = `url('data:image/svg+xml;utf8,${res}') 100% 100%`
+        //let bgimg = "url('data:image/svg+xml;utf8,"+res+"')";
+        console.log(bgimg)
+        captcha.value.style.background = bgimg;
+        //console.log(captcha.value.style.background)
+      })
     }
     
     const loginFn = (e)=>{
@@ -85,6 +103,7 @@ export default {
     return {
       ...toRefs(state),
       loginFn,
+      captcha,
       getCaptcha
     }
   }
