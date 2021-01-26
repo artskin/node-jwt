@@ -1,7 +1,10 @@
 .DS_Store
 node_modules
 /dist
-
+public/rtsp/
+public/ml5/
+public/media/
+public/images/
 
 # local env files
 .env.local

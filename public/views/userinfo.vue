@@ -1,16 +1,22 @@
 <template>
   <div class="ucenter">
-    <h2>欢迎，{{userInfo.username}}</h2>
-    <pre>{{userInfo}}</pre>
+    <h2>欢迎回来，{{userInfo.username}}</h2>
+    <pre class="hide">{{userInfo}}</pre>
+    <p>
+      <button class="btn-small" @click="offSocket">断开</button>&nbsp;
+      <button class="btn-small" @click="connectWS">重连</button>
+    </p>
     <div class="terminal">
       <p v-for="item in msgList" :key="item.id">
-        <em class="time">{{item.from}} {{item.time}}</em>: <strong>{{item.msg}}</strong>
+        <em class="time">{{item.time}}</em><span class="tag">{{item.username}}</span>: <strong>{{item.msg}}</strong>
       </p>
     </div>
-    <input v-model="socket.msg" type="text">
-    <button @click="sendMsg">发送</button>
-    <button @click="offSocket">断开</button>
-    <button @click="connectWS">重连</button>
+    <div class="chat-handle">
+      <p>
+        <textarea v-model="socket.msg" placeholder="输入消息"></textarea>
+      </p>
+      <p><button class="btn-big" @click="sendMsg">发送</button></p>
+    </div>
   </div>
 </template>
 <script>
@@ -38,22 +44,31 @@ export default {
     const socket = io.connect('/')
 
     const connectWS = () => {
-      console.log('连接?',io())
-      console.log(socket)
-      io.connect(state.socket.link)
-    }
 
-    const sendMsg =() => {
-      let msg = state.socket.msg;
-      socket.emit('sendToServer',msg)
+      socket.connect('/')
+
     }
+    socket.on('sendToClientHistory',msgs=>{
+      state.msgList = msgs
+    })
     socket.on('sendToClient',msg =>{
       console.log('服务器发给客户端',msg)
       state.msgList.push(msg)
     })
 
+    const sendMsg =() => {
+      let info = {
+        username:state.userInfo.username,
+        time:new Date().toLocaleString('chinese',{hour12:false}),
+        msg:state.socket.msg
+      };
+      console.log(socket)
+      socket.emit('sendToServer',info)
+      state.socket.msg = ''
+    }
+    
+
     const offSocket = ()=>{
-      console.log(io())
       if(socket){
         socket.disconnect()
       }

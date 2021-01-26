@@ -26,8 +26,6 @@
 <script type="module">
 const { reactive,computed,toRefs,watchEffect,renderTemplate,onMounted,ref,getCurrentInstance } = Vue;
 const { useRouter, useRoute } = VueRouter;
-
-
 export default {
   name:'login',
   setup(props,ctx){
@@ -39,39 +37,18 @@ export default {
         pwd:'123456aa',
         captcha:''
       },
-      captchaUrl:'/api/captcha'
+      captchaUrl:''
     })
     const captcha = ref(null)
     onMounted(()=>{
-      //getCaptcha()
+      getCaptcha()
     })
     const getCaptcha=(e)=>{
-      state.captchaUrl = ''
-      //console.log(captcha.value.style.background = '#ddd')
-      // setTimeout(()=>{
-      //   state.captchaUrl = '/api/captcha'
-      // },200)
-      // new Promise((resolve)=>{
-        
-      //   resolve()
-      // }).then(()=>{
-        
-      // })
-      // let imgC = new Image();
-      // imgC.src = '/api/captcha'
-      // imgC.onload=(e)=>{
-      //   console.log(e)
-      //   state.captchaUrl = '/api/captcha'
-      // }
       vm.$http({
         url: '/api/captcha',
         method: 'get'
       }).then(res=>{
-        let bgimg = `url('data:image/svg+xml;utf8,${res}') 100% 100%`
-        //let bgimg = "url('data:image/svg+xml;utf8,"+res+"')";
-        console.log(bgimg)
-        captcha.value.style.background = bgimg;
-        //console.log(captcha.value.style.background)
+        state.captchaUrl = res.data
       })
     }
     

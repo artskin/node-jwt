@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script src="./js/lib/vue@2.6.12.js"></script>
+    <script src="./js/lib/http-vue-loader.js"></script>
+  </head>
+<body>
+  <div id="my-app">
+    <my-component></my-component>
+  </div>
+
+<script type="text/javascript">
+  Vue.use(httpVueLoader);
+  let app = new Vue({
+    el: '#my-app',
+    components: 
+      {'my-component':'url:vue2/my-component.vue'}
+      
+  });
+  console.log(app)
+</script>
+</body>
+</html>

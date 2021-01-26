@@ -1,32 +1,27 @@
 const router = require("express").Router();
-const {createToken,verifyToken} = require('../token.js');
+const {createToken} = require('../token.js');
 const User = require('../models/User');
 const md5 = require('blueimp-md5')
-// const userLists = [
-//   {
-//     id:1,
-//     name:'admin',
-//     role:'管理员',
-//     pwd:'admin123'
-//   },
-//   {
-//     id:2,
-//     name:'root',
-//     pwd:'root123'
-//   }
-// ]
-// const currentIndex = 0;
+
 const svgCaptcha = require('svg-captcha')
 let captchaValue = ''
 
 router.get('/captcha',(req,res,next)=>{
   let captcha = svgCaptcha.create({
-    height:41
+    height:40,
+    size: 6,
+    noise: 3,
+    charPreset:'@#$%ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   });
   captchaValue = captcha.text
-  //req.session.captcha = captcha.text;
-  res.type('svg')
-  res.send(captcha.data)
+
+  let data = `data:image/svg+xml;base64,${new Buffer.from(unescape(encodeURIComponent(captcha.data))).toString('base64')}`;
+
+  res.json({
+    code:200,
+    data:data
+  })
+  //res.send(captcha.data)
 })
 
 router.post('/login',(req,res,next)=>{
@@ -62,27 +57,6 @@ router.post('/login',(req,res,next)=>{
     }
   });
 
-  // const checkUser = (user)=>{
-  //   if (user.name == loginInfo.uname && user.pwd == loginInfo.pwd){
-  //     return true
-  //   }else{
-  //     return false
-  //   }
-  // }
-  // const hasUser = userLists.find(checkUser)
-  // if(hasUser){
-  //   let token = createToken(hasUser)
-  //   res.json({
-  //     code:200,
-  //     token,
-  //     msg:'登录成功',
-  //   })
-  // }else{
-  //   res.send({
-  //     code:400,
-  //     msg:'用户或密码不正确'
-  //   })
-  // }
 })
 
 module.exports = router

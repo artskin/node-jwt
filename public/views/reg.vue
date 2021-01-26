@@ -26,8 +26,8 @@ export default {
     const router = useRouter()
     const state = reactive({
       form:{
-        uname:'admin',
-        pwd:'123456',
+        uname:'',
+        pwd:'',
       },
       sysInfo:vm.sysInfo
     })
