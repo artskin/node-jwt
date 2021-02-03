@@ -54,7 +54,7 @@ body{
 .flex{
   display: flex;
 }
-.captcha{margin-bottom: 15px;background: #fff;}
+.captcha{margin-bottom: 15px;width: 50%;}
 .captcha img{float: none;}
 #app{
   overflow: hidden;

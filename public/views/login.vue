@@ -11,7 +11,8 @@
       <input placeholder="请输入用密码" v-model="form.pwd" type="password"><br>
       <div class="flex">
         <input style="width:50%" placeholder="请输入验证码" v-model="form.captcha" type="text">
-        <img style="width:50%" @click="getCaptcha" class="captcha" :src="captchaUrl" alt="点击更新" title="点击更新">
+        <div ref="captcha" class="captcha" @click="getCaptcha">1</div>
+        <!-- <img style="width:50%" @click="getCaptcha" class="captcha" :src="captchaUrl" alt="点击更新" title="点击更新"> -->
       </div>
       <button @click="loginFn">登录</button>
     </form>
@@ -23,10 +24,8 @@
 </div>
 </template>
 <script type="module">
-const { reactive,computed,toRefs,watchEffect,renderTemplate,onMounted,getCurrentInstance } = Vue;
+const { reactive,computed,toRefs,watchEffect,renderTemplate,onMounted,ref,getCurrentInstance } = Vue;
 const { useRouter, useRoute } = VueRouter;
-
-
 export default {
   name:'login',
   setup(props,ctx){
@@ -40,6 +39,7 @@ export default {
       },
       captchaUrl:''
     })
+    const captcha = ref(null)
     onMounted(()=>{
       getCaptcha()
     })
@@ -80,6 +80,7 @@ export default {
     return {
       ...toRefs(state),
       loginFn,
+      captcha,
       getCaptcha
     }
   }
