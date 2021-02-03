@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Streamedian RTSP player example</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="sourcesNode"></div>
 <div>
-    <input  id="stream_url" size="36" value="rtsp://10.151.3.74:7777/03_qian_hou_wu_ti_s_3m">
-    <button id="set_new_url">Set</button>
+    <input  id="stream_url" class="form-control" size="36" value="rtsp://10.151.3.74:7777/03_qian_hou_wu_ti_s_3m">
+    <button id="set_new_url" class="btn btn-info">Play</button>
 </div>
 <div>
     <p style="color:#808080">Enter your rtsp link to the stream, for example: "rtsp://192.168.1.1:554/h264"</p>
@@ -162,9 +161,8 @@ To activate key, please, use the activation application that is placed:
 </script>
 
 <script>
-    if (window.Streamedian) {
+    if (window.streamedian) {
         let errHandler = function(err){
-          console.log('错误？',err)
             //alert(err.message);
         };
 
@@ -200,7 +198,7 @@ To activate key, please, use the activation application that is placed:
         var bufferRange  = document.getElementById("buffer_duration");
         var bufferValue  = document.getElementById("buffer_value");
 
-        var player = Streamedian.player('test_video', playerOptions);
+        var player = streamedian.player('test_video', playerOptions);
         var nativePlayer = document.getElementById('test_video');
         var range = document.getElementById('rate');
         var set_live = document.getElementById('to_end');
@@ -256,7 +254,7 @@ To activate key, please, use the activation application that is placed:
             player.destroy();
             player = null;
             html5Player.src = newSource;
-            player = Streamedian.player("test_video", playerOptions);
+            player = streamedian.player("test_video", playerOptions);
             updateRangeControls();
         }
     }

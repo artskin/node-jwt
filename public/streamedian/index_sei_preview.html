@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Streamedian player example</title>
+    <style>
+        #test_video {
+            width: 1280px;
+        }
+        #canvas {
+            position:absolute;
+            float:left;
+            opacity:1;
+            z-index:300000;
+        }
+        .rect {
+            border: 2px;
+            background-color: green;
+            width:100px;
+            height:100px;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="">
+        RTSP WS Host: <input type="text" 
+        value="ws://172.20.25.179:30080/engine/video-ingress-ws/rtsp-over-ws" 
+        size=100 id="rtsp-ws-source">
+    </form>
+    <form action="">
+        RTSP Url: <input type="text" 
+        value="rtsp://172.20.25.179:8554/QWVTYUPKJHL--T0Uu_Zjfl5aWPz2LI569yHYtqlYktb6VO-_5NOhSnua6mLLKreO-juylWTPJM31a_zziRwnp0AwBz1d8EKRxmxVSIRwHZ2nKpi7ZvlNIl5c="
+        size=100 id="rtsp-source">
+        <input type="button" value="play" onClick="onPlay()" id="play">
+    </form>
+    <div id="container">
+        <canvas id="canvas" width="1280" height="720"></canvas>
+        <video id="test_video" autoplay muted>
+            <!--<source src="rtsp://admin:admin1234@172.20.101.177:554" type="application/x-rtsp">-->
+        </video>
+    </div>
+    <canvas id="palette" width="256" height="100"></canvas>
+    <div id="forms"></div>
+
+    <p id="error_msg"></p>
+    <div id="operators" style="display: none">
+        <button id="reconnect">reconnect</button>
+        <button id="cancel">cancel</button>
+    </div>
+
+    <script src="polyfill.min.js"></script>
+
+    <script src="streamedian.min.js"></script>
+    <!-- we use minimal here -->
+    <script src="protobuf.min.js"></script>
+    <script src="previewinfo_config.js"></script>
+    <script src="previewinfo_static.js"></script>
+    <script src="tools.js"></script>
+    <script>
+        "use strict"
+        const PreviewInfoSEIID = (new Uint8Array([0x7d, 0x4b, 0x4e, 0xb8, 0xcc, 0xab, 0x49, 0x0f, 0xa8, 0x18, 0x76, 0x92,
+            0x9f,
+            0xbf, 0xdd, 0xd8
+        ])).toString();
+        const PreviewInfo = protobuf.roots["default"].sensetime.viper.video_process.preview_info.PreviewInfo;
+        const ObjectType = protobuf.roots["default"].sensetime.viper.video_process.preview_info.ObjectType;
+
+        let p;
+        const player = document.getElementById('test_video');
+        const WAIT_RELOAD_TIME = 5000;
+
+        const canvas = document.getElementById('canvas');
+        var config = {
+            canvas: canvas,
+            canvasWidth: 1280,
+            canvasHeight: 1024,
+            video: player
+        }
+
+        let overlayRenderer = streamedian.overlayRenderer(config); 
+
+        //createPalette(overlayRenderer);
+        //createForms();
+
+        function reconnectHandler(e) {
+            return new Promise((resolve, reject) => {
+                document.getElementById('error_msg').innerHTML = `连接错误${e.code}: ${e.msg}`
+                document.getElementById('operators').style.display = 'unset'
+                document.getElementById('reconnect').addEventListener('click', () => {
+                    document.getElementById('error_msg').innerHTML = ''
+                    document.getElementById('operators').style.display = 'none'
+                    resolve()
+                })
+                document.getElementById('cancel').addEventListener('click', () => {
+                    document.getElementById('error_msg').innerHTML = '已断开连接'
+                    document.getElementById('operators').style.display = 'none'
+                    reject()
+                })
+            })
+        }
+
+        let isPlayerFirst = true;
+        let autoReloadTimeout = null;
+	      let reloadFlag = false;
+
+        function onPlay() {
+            document.getElementById('error_msg').innerHTML = ''
+            let host = document.getElementById("rtsp-ws-source").value;
+            let source = document.getElementById("rtsp-source").value;
+
+            
+            if(source.indexOf("rtsp://") != 0){
+                let value = decode(source);
+
+                value = value.substr(value.indexOf("rtsp://"));
+
+                document.getElementById("rtsp-source").value = value;
+                source = value;
+            }
+            
+            
+            console.log("PLAY: ", source);
+            try{
+                overlayRenderer.restart();
+                if (p) {
+                    p.destroy();
+                }
+                p = streamedian.player('test_video', {
+                    socket: host,
+                    reconnectHandler: reconnectHandler
+                });
+
+                p.setSource(source, "rtsp");
+                document.getElementById('test_video').addEventListener('error', function (e) {
+                    console.error(e);
+                })
+            }
+            catch(e) {
+                console.log(e);
+                setTimeout(() => {
+                    onPlay();
+                }, WAIT_RELOAD_TIME);
+            }
+            
+            if(isPlayerFirst){
+                isPlayerFirst = false;
+                animLoop();
+                setInterval(function () {
+                    checkPlaying();
+                }, WAIT_RELOAD_TIME);
+            }
+        }
+
+        function isPlaying(){
+            clearTimeout(autoReloadTimeout);
+            autoReloadTimeout = null;
+            reloadFlag = false;
+        }
+
+        function checkPlaying() {
+            if (autoReloadTimeout) {
+                return;
+            }
+            reloadFlag = true;
+            autoReloadTimeout = setTimeout(() => {
+               clearTimeout(autoReloadTimeout);
+               autoReloadTimeout = null;
+               if (reloadFlag) {
+                   console.log("Player replay");
+                    onPlay();
+               }
+            }, WAIT_RELOAD_TIME);
+        };
+
+        function animLoop() {
+            var running, lastFrame = window.performance.now();
+            var lastTime = 0;
+            function loop(now) {
+                // stop the loop if render returned false
+                if (running !== false) {
+                    requestAnimationFrame(loop);
+                    let deltaT = now - lastFrame;
+                    // do not render frame when deltaT is too high
+                    // if (deltaT < 160) {
+                    //     running = render(deltaT);
+                    // }
+                    // console.log("CUR: ", player.currentTime);
+                    if(player.currentTime - lastTime > 0.005){
+                        isPlaying();
+                    }
+                    lastTime = player.currentTime;
+
+                    let videoWidth = player.videoWidth
+                    let videoHeight = player.videoHeight
+                    // console.log("video: ", videoWidth, videoHeight)
+                    let ev = p.pullOOBData(player.currentTime + 0.01);
+                    if (ev && ev.length > 0) {
+                        let last = ev[ev.length - 1];
+                            let seiID = last.payload.subarray(0, 16).toString();
+                            if (seiID != PreviewInfoSEIID)  {
+                              return;
+                            }
+                            if (videoWidth > 0 && last.foundIDR && PreviewInfo) {
+                                let pi = PreviewInfo.decode(last.payload.subarray(16));
+                                //console.log("decoded = ", ev.length, last.payload.length, JSON.stringify(pi), last);
+                                overlayRenderer.render(now, pi, videoWidth, videoHeight);
+                            } else {
+                                overlayRenderer.render(now, null, videoWidth, videoHeight);
+                            }
+                    } else {
+                        overlayRenderer.render(now, null, videoWidth, videoHeight);
+                    }
+                    lastFrame = now;
+                }
+            }
+            loop(lastFrame);
+        }
+    </script>
+</body>
+
+</html>

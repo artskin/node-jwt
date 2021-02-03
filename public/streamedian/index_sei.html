@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Streamedian player example</title>
+    <style>
+        #test_video {
+            width: 720px;
+        }
+    </style>
+</head>
+<body>
+<form action="">
+    <input type="text" value="rtsp://admin:admin1234@10.151.116.188:554" size=100 id="rtsp-source">
+    <input type="button" value="play" onClick="onPlay()" id="play">
+</form>
+
+<video id="test_video" autoplay muted>
+</video>
+<p id="error_msg"></p>
+<div id="operators" style="display: none">
+    <button id="reconnect">reconnect</button>
+    <button id="cancel">cancel</button>
+</div>
+
+<script src="https://cdn.bootcss.com/babel-polyfill/7.0.0-beta.2/polyfill.min.js"></script>
+<script src="streamedian.min.js"></script>
+<script>
+    "use strict"
+
+    let p = streamedian.player('test_video', {
+      socket:"ws://localhost:8080/ws", 
+      reconnectHandler: reconnectHandler
+    });
+    let player = document.getElementById('test_video');
+    let n = document.getElementById('sei_data');
+    let n1 = document.getElementById('sei_payload');
+    function reconnectHandler (e) {
+        return new Promise((resolve, reject) => {
+            document.getElementById('error_msg').innerHTML = `连接错误${e.code}: ${e.msg}`
+            document.getElementById('operators').style.display = 'unset'
+            document.getElementById('reconnect').addEventListener('click', ()=> {
+                document.getElementById('error_msg').innerHTML = ''
+                document.getElementById('operators').style.display = 'none'
+                resolve()
+            })
+            document.getElementById('cancel').addEventListener('click', ()=> {
+                document.getElementById('error_msg').innerHTML = '已断开连接'
+                document.getElementById('operators').style.display = 'none'
+                reject()
+            })
+        })
+    }
+
+    function onPlay() {
+        document.getElementById('error_msg').innerHTML = ''
+        let source = document.getElementById("rtsp-source").value;
+        console.log("PLAY: ", source);
+        p.setSource(source, "rtsp");
+        return true;
+    }
+</script>
+</body>
+
+</html>

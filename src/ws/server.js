@@ -1,15 +1,3 @@
-// const WebSocket = require('ws');
-// console.log(WebSocket.Server)
-
-// const wss = new WebSocket.Server({ port: 8080 });
-
-// wss.on('connection', function connection(ws) {
-//   ws.on('message', function incoming(message) {
-//     console.log('received: %s', message);
-//   });
-
-//   ws.send('something');
-// });
 
 /**
  * Created by wendy on 2017/4/13.
@@ -31,7 +19,6 @@ wsserver.on('connection',function(conn) {
     var protocol = conn.protocol;
     if(protocol == "control") {
       conn.onmessage = function (msg) {
-        console.log(msg.data);
         var res = wspParse(msg.data);
         if(res.msg == "INIT"){
           var ipIndex = _ip2int(res.data.host);
@@ -64,7 +51,7 @@ wsserver.on('connection',function(conn) {
     else if(protocol == "data"){
       //建立pipe
       conn.onmessage = function (msg) {
-        console.log(msg.data);
+        //console.log(msg.data);
         var res = wspParse(msg.data);
         if(res.msg == "JOIN") {
           channelsocket[res.data.channel].on('rtpData', function (data) {
