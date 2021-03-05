@@ -39,6 +39,35 @@ app.use((req,res,next)=>{
 })
 
 app.use(express.static('public'))
+// const path = require('path')
+// console.log(path.resolve(__dirname),'public')
+ console.log(app.static)
+//vue ssr 渲染
+const Vue = require('vue')
+const renderer = require('vue-server-renderer').createRenderer({
+  template:require('fs').readFileSync(`./public/vue.ssr.tmpl.html`,'utf-8')
+});
+app.use((req,res,next)=>{
+  if(req.url.includes('ssr')){
+    const ssrApp = new Vue({
+      data:{
+        url:req.url
+      },
+      template:`<div>hello ssr vue dom,你访问的是{{url}}</div>`
+    })
+    const context = {
+      title:'Vue SSR Renderer ',
+      meta:`<meta name="author" content="Web Layout:amu"/>`
+    }
+
+    renderer.renderToString(ssrApp,context,(err,html)=>{
+      if(err) throw err;
+      
+      res.end(html)
+    })
+
+  }
+})
 
 //api-router
 const reg = require('./api/reg')

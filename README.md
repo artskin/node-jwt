@@ -43,3 +43,5 @@ root/
 - [x] websocket:消息保存，预读取最近10条
 - [ ] websocket:频道? ws库
  
+
+## 添加vue-ssr 渲染
