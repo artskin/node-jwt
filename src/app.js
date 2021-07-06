@@ -81,7 +81,7 @@ app.use('/api', userinfo)
 
 require('./api/socket_server')(server);
 
-server.listen(6006,()=>{
+server.listen(6001,()=>{
   console.log('Server started on port http://localhost:3000')
 })
 
